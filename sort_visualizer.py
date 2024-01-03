@@ -426,6 +426,71 @@ def shell_sort(data, draw, interval):
 
         gap //= 2
 
+def radix_sort(data, draw, interval):
+    """
+    Perform radix sort on the input data and visualize the process.
+
+    Parameters:
+    - data: List[int]
+        The list of integers to be sorted.
+    - draw: function
+        A function to visualize the sorting process.
+    - interval: float
+        The time interval between visualization steps.
+    """
+    # Find the maximum number to know the number of digits
+    max_num = max(data)
+
+    # Do counting sort for every digit
+    exp = 1
+    while max_num // exp > 0:
+        counting_sort_radix(data, draw, interval, exp)
+        exp *= 10
+
+
+def counting_sort_radix(data, draw, interval, exp):
+    """
+    Perform counting sort on the input data based on the current digit.
+
+    Parameters:
+    - data: List[int]
+        The list of integers to be sorted.
+    - draw: function
+        A function to visualize the sorting process.
+    - interval: float
+        The time interval between visualization steps.
+    - exp: int
+        The current digit place value.
+    """
+    n = len(data)
+    output = [0] * n
+    count = [0] * 10
+
+    # Store count of occurrences in count[]
+    for i in range(n):
+        index = data[i] // exp
+        count[index % 10] += 1
+
+    # Change count[i] so that count[i] now contains actual
+    # position of this digit in output[]
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+
+    # Build the output array
+    i = n - 1
+    while i >= 0:
+        index = data[i] // exp
+        output[count[index % 10] - 1] = data[i]
+        count[index % 10] -= 1
+        i -= 1
+
+    # Copy the output array to data[], so that data[] now
+    # contains sorted numbers according to the current digit
+    for i in range(n):
+        data[i] = output[i]
+        draw(data, ['green' if x == i else 'blue' for x in range(len(data))])
+        plt.pause(interval)
+
 def update(frame, bars, colors):
     """
     Update the colors of the bars in the animation.
@@ -487,7 +552,7 @@ def main():
     Returns:
     - None
     """
-    algorithm = input("Choose a sorting algorithm (bubble, selection, insertion, merge, quick, heap, counting, shell): ").lower()
+    algorithm = input("Choose a sorting algorithm (bubble, selection, insertion, merge, quick, heap, counting, shell, radix): ").lower()
     n = int(input("Enter the number of elements in the array: "))
     data = np.random.randint(1, 100, size=n)
 
@@ -507,6 +572,8 @@ def main():
         sort_func = counting_sort
     elif algorithm == 'shell':
         sort_func = shell_sort
+    elif algorithm == 'radix':
+        sort_func = radix_sort
     else:
         print("Invalid algorithm choice. Exiting.")
         return
