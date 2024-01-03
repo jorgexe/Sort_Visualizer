@@ -491,6 +491,46 @@ def counting_sort_radix(data, draw, interval, exp):
         draw(data, ['green' if x == i else 'blue' for x in range(len(data))])
         plt.pause(interval)
 
+def bucket_sort(data, draw, interval):
+    """
+    Perform bucket sort on the input data and visualize the process.
+
+    Parameters:
+    - data: List[int]
+        The list of integers to be sorted.
+    - draw: function
+        A function to visualize the sorting process. It should take two parameters:
+        - data: List[int]
+            The current state of the data.
+        - colors: List[str]
+            The list of colors corresponding to each element in the data.
+    - interval: float
+        The time interval between visualization steps.
+    """
+    # Number of buckets
+    num_buckets = 10
+
+    # Create buckets
+    buckets = [[] for _ in range(num_buckets)]
+
+    # Place elements into buckets
+    for value in data:
+        index = int(value * num_buckets / (max(data) + 1))
+        buckets[index].append(value)
+
+    # Sort each bucket and update visualization
+    for i, bucket in enumerate(buckets):
+        buckets[i] = sorted(bucket)
+        draw(data, ['green' if x in range(len(data)) else 'blue' for x in range(len(data))])
+        plt.pause(interval)
+
+    # Concatenate the sorted buckets
+    data.resize(0)
+    for bucket in buckets:
+        data = np.concatenate((data, bucket))
+        draw(data, ['green' if x in range(len(data)) else 'blue' for x in range(len(data))])
+        plt.pause(interval)
+
 def update(frame, bars, colors):
     """
     Update the colors of the bars in the animation.
@@ -552,7 +592,7 @@ def main():
     Returns:
     - None
     """
-    algorithm = input("Choose a sorting algorithm (bubble, selection, insertion, merge, quick, heap, counting, shell, radix): ").lower()
+    algorithm = input("Choose a sorting algorithm (bubble, selection, insertion, merge, quick, heap, counting, shell, radix, bucket): ").lower()
     n = int(input("Enter the number of elements in the array: "))
     data = np.random.randint(1, 100, size=n)
 
@@ -574,6 +614,8 @@ def main():
         sort_func = shell_sort
     elif algorithm == 'radix':
         sort_func = radix_sort
+    elif algorithm == 'bucket':
+        sort_func = bucket_sort
     else:
         print("Invalid algorithm choice. Exiting.")
         return
