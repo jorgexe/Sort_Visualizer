@@ -580,8 +580,7 @@ def main():
     selects the appropriate sorting algorithm, and visualizes the sorting process.
 
     User Input:
-    - Sorting algorithm choice (bubble, selection, insertion, merge, quick, heap,
-      counting, shell)
+    - Sorting algorithm choice (bubble, selection, insertion, merge, quick, heap, counting, shell, radix, bucket)
     - Number of elements in the array
 
     Visualization:
@@ -618,6 +617,7 @@ def main():
         sort_func = bucket_sort
     else:
         print("Invalid algorithm choice. Exiting.")
+        print("Valid choices are: bubble, selection, insertion, merge, quick, heap, counting, shell, radix, bucket")
         return
 
     plt.figure(figsize=(10, 6))
