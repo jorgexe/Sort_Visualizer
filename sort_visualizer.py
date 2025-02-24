@@ -1,50 +1,25 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+import tkinter as tk
+from tkinter import ttk
+import threading
+import time
 
 def bubble_sort(data, draw, interval):
-    """
-    Perform bubble sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     n = len(data)
     for i in range(n):
         for j in range(0, n-i-1):
             if data[j] > data[j+1]:
                 data[j], data[j+1] = data[j+1], data[j]
                 draw(data, ['green' if x == j or x == j+1 else 'blue' for x in range(len(data))])
-                plt.pause(interval)
+                time.sleep(interval)
     draw(data, ['green' for _ in range(len(data))])
 
 def selection_sort(data, draw, interval):
-    """
-    Perform selection sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     n = len(data)
     for i in range(n):
         min_index = i
@@ -53,26 +28,11 @@ def selection_sort(data, draw, interval):
                 min_index = j
         data[i], data[min_index] = data[min_index], data[i]
         draw(data, ['green' if x == i or x == min_index else 'blue' for x in range(len(data))])
-        plt.pause(interval)
+        time.sleep(interval)
     draw(data, ['green' for _ in range(len(data))])
 
 def insertion_sort(data, draw, interval):
-    """
-    Perform insertion sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     n = len(data)
     for i in range(1, n):
         key = data[i]
@@ -82,48 +42,15 @@ def insertion_sort(data, draw, interval):
             j -= 1
         data[j + 1] = key
         draw(data, ['green' if x == i or x == j+1 else 'blue' for x in range(len(data))])
-        plt.pause(interval)
+        time.sleep(interval)
     draw(data, ['green' for _ in range(len(data))])
 
 def merge_sort(data, draw, interval):
-    """
-    Perform merge sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     merge_sort_recursive(data, 0, len(data) - 1, draw, interval)
 
 def merge_sort_recursive(data, left, right, draw, interval):
-    """
-    Recursively perform merge sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - left: int
-        The index of the left boundary of the subarray to be sorted.
-    - right: int
-        The index of the right boundary of the subarray to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-    - interval: float
-        The time interval between visualization steps.
-    """
     if left < right:
         middle = (left + right) // 2
         merge_sort_recursive(data, left, middle, draw, interval)
@@ -131,27 +58,7 @@ def merge_sort_recursive(data, left, right, draw, interval):
         merge(data, left, middle, right, draw, interval)
 
 def merge(data, left, middle, right, draw, interval):
-    """
-    Merge two sorted halves of the array and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - left: int
-        The index of the left boundary of the subarray.
-    - middle: int
-        The index of the middle element in the subarray.
-    - right: int
-        The index of the right boundary of the subarray.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-    - interval: float
-        The time interval between visualization steps.
-    """
     left_part = data[left:middle + 1].copy()
     right_part = data[middle + 1:right + 1].copy()
 
@@ -178,47 +85,14 @@ def merge(data, left, middle, right, draw, interval):
         k += 1
 
     draw(data, ['green' if left <= x <= right else 'blue' for x in range(len(data))])
-    plt.pause(interval)
+    time.sleep(interval)
 
 def quick_sort(data, draw, interval):
-    """
-    Perform quicksort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     quick_sort_recursive(data, 0, len(data) - 1, draw, interval)
 
 def quick_sort_recursive(data, low, high, draw, interval):
-    """
-    Recursively perform quicksort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - low: int
-        The index of the lowest element in the subarray to be sorted.
-    - high: int
-        The index of the highest element in the subarray to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-    - interval: float
-        The time interval between visualization steps.
-    """
     if low < high:
         pivot_index = partition(data, low, high, draw, interval)
 
@@ -226,29 +100,7 @@ def quick_sort_recursive(data, low, high, draw, interval):
         quick_sort_recursive(data, pivot_index + 1, high, draw, interval)
 
 def partition(data, low, high, draw, interval):
-    """
-    Partition the array and visualize the process in the quicksort algorithm.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - low: int
-        The index of the lowest element in the subarray.
-    - high: int
-        The index of the highest element in the subarray.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-    - interval: float
-        The time interval between visualization steps.
-
-    Returns:
-    - int
-        The index of the pivot element after partitioning.
-    """
     pivot = data[high]
     i = low - 1
 
@@ -261,77 +113,30 @@ def partition(data, low, high, draw, interval):
 
     data[i + 1], data[high] = data[high], data[i + 1]
     draw(data, ['green' if x == i + 1 or x == high else 'blue' for x in range(len(data))])
-    plt.pause(interval)
+    time.sleep(interval)
 
     return i + 1
 
 def heap_sort(data, draw, interval):
-    """
-    Perform heapsort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     build_max_heap(data, draw, interval)
     n = len(data)
 
     for i in range(n - 1, 0, -1):
         data[i], data[0] = data[0], data[i]
         draw(data, ['green' if x == i or x == 0 else 'blue' for x in range(len(data))])
-        plt.pause(interval)
+        time.sleep(interval)
         max_heapify(data, 0, i, draw, interval)
 
 def build_max_heap(data, draw, interval):
-    """
-    Build a max heap from the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-    - interval: float
-        The time interval between visualization steps.
-    """
     n = len(data)
 
     for i in range(n // 2 - 1, -1, -1):
         max_heapify(data, i, n, draw, interval)
 
 def max_heapify(data, i, n, draw, interval):
-    """
-    Maintain the max heap property and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - i: int
-        The index of the current root node in the heap.
-    - n: int
-        The size of the heap.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-    - interval: float
-        The time interval between visualization steps.
-    """
     largest = i
     left_child = 2 * i + 1
     right_child = 2 * i + 2
@@ -345,26 +150,11 @@ def max_heapify(data, i, n, draw, interval):
     if largest != i:
         data[i], data[largest] = data[largest], data[i]
         draw(data, ['green' if x == i or x == largest else 'blue' for x in range(len(data))])
-        plt.pause(interval)
+        time.sleep(interval)
         max_heapify(data, largest, n, draw, interval)
 
 def counting_sort(data, draw, interval):
-    """
-    Perform counting sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     max_value = max(data)
     min_value = min(data)
     range_of_elements = max_value - min_value + 1
@@ -387,25 +177,10 @@ def counting_sort(data, draw, interval):
     for i in range(len(data)):
         data[i] = output[i]
         draw(data, ['green' if x == i else 'blue' for x in range(len(data))])
-        plt.pause(interval)
+        time.sleep(interval)
 
 def shell_sort(data, draw, interval):
-    """
-    Perform shell sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-
-    - interval: float
-        The time interval between visualization steps.
-    """
     n = len(data)
     gap = n // 2
 
@@ -422,22 +197,12 @@ def shell_sort(data, draw, interval):
 
             data[j] = temp
             draw(data, ['green' if x == j else 'blue' for x in range(len(data))])
-            plt.pause(interval)
+            time.sleep(interval)
 
         gap //= 2
 
 def radix_sort(data, draw, interval):
-    """
-    Perform radix sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process.
-    - interval: float
-        The time interval between visualization steps.
-    """
     # Find the maximum number to know the number of digits
     max_num = max(data)
 
@@ -449,19 +214,7 @@ def radix_sort(data, draw, interval):
 
 
 def counting_sort_radix(data, draw, interval, exp):
-    """
-    Perform counting sort on the input data based on the current digit.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process.
-    - interval: float
-        The time interval between visualization steps.
-    - exp: int
-        The current digit place value.
-    """
     n = len(data)
     output = [0] * n
     count = [0] * 10
@@ -489,24 +242,10 @@ def counting_sort_radix(data, draw, interval, exp):
     for i in range(n):
         data[i] = output[i]
         draw(data, ['green' if x == i else 'blue' for x in range(len(data))])
-        plt.pause(interval)
+        time.sleep(interval)
 
 def bucket_sort(data, draw, interval):
-    """
-    Perform bucket sort on the input data and visualize the process.
 
-    Parameters:
-    - data: List[int]
-        The list of integers to be sorted.
-    - draw: function
-        A function to visualize the sorting process. It should take two parameters:
-        - data: List[int]
-            The current state of the data.
-        - colors: List[str]
-            The list of colors corresponding to each element in the data.
-    - interval: float
-        The time interval between visualization steps.
-    """
     # Number of buckets
     num_buckets = 10
 
@@ -529,39 +268,17 @@ def bucket_sort(data, draw, interval):
     for bucket in buckets:
         data = np.concatenate((data, bucket))
         draw(data, ['green' if x in range(len(data)) else 'blue' for x in range(len(data))])
-        plt.pause(interval)
+        time.sleep(interval)
 
 def update(frame, bars, colors):
-    """
-    Update the colors of the bars in the animation.
 
-    Parameters:
-    - frame: int
-        The frame number in the animation.
-    - bars: List[matplotlib.container.BarContainer]
-        List of bar containers representing the bars in the plot.
-    - colors: List[str]
-        List of colors corresponding to each element in the data.
-
-    Returns:
-    - List[matplotlib.container.BarContainer]
-        The updated list of bar containers with new colors.
-    """
     for bar, color in zip(bars, colors):
         bar.set_color(color)
     return bars
 
 
 def draw(data, colors):
-    """
-    Visualize the current state of the data.
 
-    Parameters:
-    - data: List[int]
-        The current state of the data.
-    - colors: List[str]
-        The list of colors corresponding to each element in the data.
-    """
     if not hasattr(draw, 'bars'):
         draw.bars = plt.bar(range(len(data)), data, color=colors)
         plt.pause(0.001)
@@ -571,26 +288,104 @@ def draw(data, colors):
             bar.set_color(color)
         plt.pause(0.001)
 
+
+class SortingVisualizerGUI:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Sorting Algorithm Visualizer")
+        
+        self.algorithm_map = {
+            'bubble': bubble_sort,
+            'selection': selection_sort,
+            'insertion': insertion_sort,
+            'merge': merge_sort,
+            'quick': quick_sort,
+            'heap': heap_sort,
+            'counting': counting_sort,
+            'shell': shell_sort,
+            'radix': radix_sort,
+            'bucket': bucket_sort
+        }
+        self.setup_widgets()
+        self.data = np.array([])
+        self.sorting = False
+        
+        
+    def setup_widgets(self):
+        control_frame = ttk.Frame(self.master)
+        control_frame.pack(pady=10)
+        
+        self.algorithm_var = tk.StringVar()
+        self.algorithm_cb = ttk.Combobox(control_frame, textvariable=self.algorithm_var, 
+                                       values=list(self.algorithm_map.keys()), width=15)
+        self.algorithm_cb.current(0)
+        self.algorithm_cb.pack(side=tk.LEFT, padx=5)
+        
+        self.size_var = tk.IntVar(value=50)
+        self.size_entry = ttk.Entry(control_frame, textvariable=self.size_var, width=10)
+        self.size_entry.pack(side=tk.LEFT, padx=5)
+        
+        self.generate_btn = ttk.Button(control_frame, text="Generate", command=self.generate_data)
+        self.generate_btn.pack(side=tk.LEFT, padx=5)
+        
+        self.start_btn = ttk.Button(control_frame, text="Start", command=self.start_sorting)
+        self.start_btn.pack(side=tk.LEFT, padx=5)
+        
+        self.figure = Figure(figsize=(10, 6), dpi=100)
+        self.plot = self.figure.add_subplot(111)
+        self.canvas = FigureCanvasTkAgg(self.figure, master=self.master)
+        self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        
+    def generate_data(self):
+        n = self.size_var.get()
+        self.data = np.random.randint(1, 100, size=n)
+        self.update_plot()
+        
+    def update_plot(self, colors=None):
+        self.plot.clear()
+        if colors is None:
+            colors = ['blue'] * len(self.data)
+        self.plot.bar(range(len(self.data)), self.data, color=colors)
+        self.canvas.draw()
+        
+    def draw(self, data, colors):
+        if not self.sorting:
+            return
+        self.data = data.copy()
+        self.master.after(0, self.update_plot, colors)
+        
+    def start_sorting(self):
+        if self.sorting or len(self.data) == 0:
+            return
+            
+        algorithm = self.algorithm_var.get()
+        if algorithm not in self.algorithm_map:
+            return
+            
+        self.sorting = True
+        self.generate_btn['state'] = 'disabled'
+        self.start_btn['state'] = 'disabled'
+        
+        sort_func = self.algorithm_map[algorithm]
+        thread = threading.Thread(target=self.run_sort, args=(sort_func,))
+        thread.start()
+        
+    def run_sort(self, sort_func):
+        data_copy = self.data.copy()
+        try:
+            sort_func(data_copy, self.draw, 0.01)
+        finally:
+            self.master.after(0, self.on_sort_finish)
+            
+    def on_sort_finish(self):
+        self.sorting = False
+        self.generate_btn['state'] = 'normal'
+        self.start_btn['state'] = 'normal'
+        self.update_plot(['green'] * len(self.data))
+
+
 def main():
-    """
-    Main function for the sorting visualization program.
 
-    This function takes user input for choosing a sorting algorithm and the number
-    of elements in the array. It then initializes the array with random integers,
-    selects the appropriate sorting algorithm, and visualizes the sorting process.
-
-    User Input:
-    - Sorting algorithm choice (bubble, selection, insertion, merge, quick, heap, counting, shell, radix, bucket)
-    - Number of elements in the array
-
-    Visualization:
-    - Displays the initial state of the array.
-    - Animates the sorting process using the chosen algorithm.
-    - Displays the final sorted array.
-
-    Returns:
-    - None
-    """
     algorithm = input("Choose a sorting algorithm (bubble, selection, insertion, merge, quick, heap, counting, shell, radix, bucket): ").lower()
     n = int(input("Enter the number of elements in the array: "))
     data = np.random.randint(1, 100, size=n)
@@ -628,5 +423,7 @@ def main():
     plt.show()
 
 if __name__ == "__main__":
-    main()
+    root = tk.Tk()
+    app = SortingVisualizerGUI(root)
+    root.mainloop()
 
