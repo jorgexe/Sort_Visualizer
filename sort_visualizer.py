@@ -383,45 +383,6 @@ class SortingVisualizerGUI:
         self.start_btn['state'] = 'normal'
         self.update_plot(['green'] * len(self.data))
 
-
-def main():
-
-    algorithm = input("Choose a sorting algorithm (bubble, selection, insertion, merge, quick, heap, counting, shell, radix, bucket): ").lower()
-    n = int(input("Enter the number of elements in the array: "))
-    data = np.random.randint(1, 100, size=n)
-
-    if algorithm == 'bubble':
-        sort_func = bubble_sort
-    elif algorithm == 'selection':
-        sort_func = selection_sort
-    elif algorithm == 'insertion':
-        sort_func = insertion_sort
-    elif algorithm == 'merge':
-        sort_func = merge_sort
-    elif algorithm == 'quick':
-        sort_func = quick_sort
-    elif algorithm == 'heap':
-        sort_func = heap_sort
-    elif algorithm == 'counting':
-        sort_func = counting_sort
-    elif algorithm == 'shell':
-        sort_func = shell_sort
-    elif algorithm == 'radix':
-        sort_func = radix_sort
-    elif algorithm == 'bucket':
-        sort_func = bucket_sort
-    else:
-        print("Invalid algorithm choice. Exiting.")
-        print("Valid choices are: bubble, selection, insertion, merge, quick, heap, counting, shell, radix, bucket")
-        return
-
-    plt.figure(figsize=(10, 6))
-    plt.title(f"{algorithm.capitalize()} Sort Visualization")
-
-    sort_func(data.copy(), draw, 0.01)
-
-    plt.show()
-
 if __name__ == "__main__":
     root = tk.Tk()
     app = SortingVisualizerGUI(root)
